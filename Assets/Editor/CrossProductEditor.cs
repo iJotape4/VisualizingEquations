@@ -17,8 +17,23 @@ public class CrossProductEditor : CommonEditor, IUpdateSceneGUI
         window.Show();
     }
 
+    private void SetDefaultValues()
+    {
+        m_p = new Vector3(0f, 1f, 0f);
+        m_q = new Vector3(1.0f, 0.0f, 0f);
+    }
     private void OnEnable()
     {
+        if(m_p == Vector3.zero && m_q == Vector3.zero && m_pxq == Vector3.zero)
+        {
+            SetDefaultValues();
+        }
+
+        obj = new SerializedObject(this);
+        propP = obj.FindProperty("m_p");
+        propQ = obj.FindProperty("m_q");
+        propPxQ = obj.FindProperty("m_pxq");
+        
         SceneView.duringSceneGui += SceneGUI;
     }
 
