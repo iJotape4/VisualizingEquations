@@ -38,7 +38,28 @@ namespace Editor
 
         private void SceneGUI(SceneView scene)
         {
+            Handles.color = Color.red;
+            Vector3 p0 = SetMovePoint(m_P0);
             
+            Handles.color = Color.green;
+            Vector3 p1 = SetMovePoint(m_P1);
+            
+            Handles.color = Color.blue;
+            Vector3 c = SetMovePoint(m_c);
+            
+            if(m_P0 != p0 || m_P1 != p1 || m_c != c)
+            {
+                m_P0 = p0;
+                m_P1 = p1;
+                m_c = c;
+                Repaint();
+            }
+        }
+
+        Vector3 SetMovePoint(Vector3 pos)
+        {
+            float size = HandleUtility.GetHandleSize(Vector3.zero);
+            return Handles.FreeMoveHandle(pos , Quaternion.identity, size, Vector3.zero, Handles.SphereHandleCap);
         }
     }
 }
