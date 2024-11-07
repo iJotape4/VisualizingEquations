@@ -8,6 +8,7 @@ namespace Editor
         public Vector3 m_P0, m_P1, m_c;
         private SerializedObject obj;
         private SerializedProperty propP0, propP1, propC;
+        private GUIStyle guiStyle = new GUIStyle();
         
         [MenuItem("Tools/Dot Product")]
         public static void ShowWindow()
@@ -29,6 +30,10 @@ namespace Editor
             propP0 = obj.FindProperty("m_P0");
             propP1 = obj.FindProperty("m_P1");
             propC = obj.FindProperty("m_c");
+
+            guiStyle.fontSize = 25;
+            guiStyle.fontStyle = FontStyle.Bold;
+            guiStyle.normal.textColor = Color.white;
             
             SceneView.duringSceneGui += SceneGUI;
         }
@@ -78,12 +83,30 @@ namespace Editor
                 m_c = c;
                 Repaint();
             }
+            
+            DrawLabel(p0, p1, c);
         }
 
         Vector3 SetMovePoint(Vector3 pos)
         {
             float size = HandleUtility.GetHandleSize(Vector3.zero);
             return Handles.FreeMoveHandle(pos , Quaternion.identity, size, Vector3.zero, Handles.SphereHandleCap);
+        }
+        
+        float Dotproduct(Vector3 p0, Vector3 p1, Vector3 c)
+        {
+            Vector3 a = (p0 - c).normalized;
+            Vector3 b = (p1 - c).normalized;
+            return Vector3.Dot(a, b);
+        }
+
+        void DrawLabel(Vector3 p0, Vector3 p1, Vector3 c)
+        {
+            Handles.Label(c, Dotproduct(p0, p1, c).ToString("F1"), guiStyle);
+            Handles.color = Color.black;
+            
+            Handles.DrawAAPolyLine(3f, p0, c);
+            Handles.DrawAAPolyLine(3f, p1, c);
         }
     }
 }
