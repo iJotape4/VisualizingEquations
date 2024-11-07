@@ -1,7 +1,7 @@
 using UnityEditor;
 using UnityEngine;
 
-public class CrossProductEditor : EditorWindow
+public class CrossProductEditor : CommonEditor, IUpdateSceneGUI
 {
     public Vector3 m_p;
     public Vector3 m_q;
@@ -15,5 +15,25 @@ public class CrossProductEditor : EditorWindow
     {
         CrossProductEditor window = (CrossProductEditor) GetWindow(typeof(CrossProductEditor), true , "Cross Product");
         window.Show();
+    }
+
+    private void OnEnable()
+    {
+        SceneView.duringSceneGui += SceneGUI;
+    }
+
+    private void OnDisable()
+    {
+        SceneView.duringSceneGui -= SceneGUI;
+    }
+
+    private void OnGUI()
+    {
+        
+    }
+
+    public void SceneGUI(SceneView view)
+    {
+        
     }
 }

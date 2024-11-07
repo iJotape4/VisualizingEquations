@@ -3,7 +3,7 @@ using UnityEditor;
 
 namespace Editor
 {
-    public class DotProductEditor : EditorWindow
+    public class DotProductEditor : CommonEditor, IUpdateSceneGUI
     {
         public Vector3 m_P0, m_P1, m_c;
         private SerializedObject obj;
@@ -56,16 +56,8 @@ namespace Editor
                 SceneView.RepaintAll(); 
             }
         }
-
-        private void DrawBlockGUI(string lab, SerializedProperty prop)
-        {
-            EditorGUILayout.BeginHorizontal(" box");
-            EditorGUILayout.LabelField(lab, GUILayout.Width(50));
-            EditorGUILayout.PropertyField(prop, GUIContent.none);
-            EditorGUILayout.EndHorizontal();
-        }
-
-        private void SceneGUI(SceneView scene)
+        
+        public void SceneGUI(SceneView scene)
         {
             Handles.color = Color.red;
             Vector3 p0 = SetMovePoint(m_P0);
