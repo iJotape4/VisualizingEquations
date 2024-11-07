@@ -24,6 +24,12 @@ namespace Editor
                 m_P1 = new Vector3(0.5f, 0.5f, 0f);
                 m_c = Vector3.zero;
             }
+
+            obj = new SerializedObject(this);
+            propP0 = obj.FindProperty("m_P0");
+            propP1 = obj.FindProperty("m_P1");
+            propC = obj.FindProperty("m_c");
+            
             SceneView.duringSceneGui += SceneGUI;
         }
 
@@ -34,6 +40,24 @@ namespace Editor
         
         private void OnGUI()
         {
+            obj.Update();
+            
+            DrawBlockGUI("P0", propP0);
+            DrawBlockGUI("P1", propP1);
+            DrawBlockGUI("C", propC);
+
+            if (obj.ApplyModifiedProperties())
+            {
+                SceneView.RepaintAll(); 
+            }
+        }
+
+        private void DrawBlockGUI(string lab, SerializedProperty prop)
+        {
+            EditorGUILayout.BeginHorizontal(" box");
+            EditorGUILayout.LabelField(lab, GUILayout.Width(50));
+            EditorGUILayout.PropertyField(prop, GUIContent.none);
+            EditorGUILayout.EndHorizontal();
         }
 
         private void SceneGUI(SceneView scene)
