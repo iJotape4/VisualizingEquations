@@ -68,6 +68,29 @@ public class CrossProductEditor : CommonEditor, IUpdateSceneGUI
 
     public void SceneGUI(SceneView view)
     {
-        
+        Vector3 p = Handles.PositionHandle(m_p, Quaternion.identity);
+        Vector3 q = Handles.PositionHandle(m_q, Quaternion.identity);
     }
+    
+    private void DrawLineGUI ( Vector3 pos, string text, Color color)
+    {
+        Handles.color = color;
+        Handles.Label(pos, text, guiStyle);
+        Handles.DrawAAPolyLine(3f, pos, Vector3.zero);
+    }
+
+    private void RepaintOnGUI()
+    {
+        Repaint();
+    }
+
+    Vector3 CrossProduct(Vector3 p, Vector3 q)
+    {
+        float x = p.y * q.z - p.z * q.y;
+        float y = p.z * q.x - p.x * q.z;
+        float z = p.x * q.y - p.y * q.x;
+        
+        return new Vector3(x, y, z);
+    }
+
 }
