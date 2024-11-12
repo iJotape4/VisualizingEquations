@@ -41,11 +41,13 @@ public class CrossProductEditor : CommonEditor, IUpdateSceneGUI
         guiStyle.normal.textColor = Color.white;
         
         SceneView.duringSceneGui += SceneGUI;
+        Undo.undoRedoPerformed += RepaintOnGUI;
     }
 
     private void OnDisable()
     {
         SceneView.duringSceneGui -= SceneGUI;
+        Undo.undoRedoPerformed -= RepaintOnGUI;
     }
 
     private void OnGUI()
