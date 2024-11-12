@@ -10,6 +10,8 @@ public class CrossProductEditor : CommonEditor, IUpdateSceneGUI
     private SerializedObject obj;
     private SerializedProperty propP, propQ, propPxQ;
     
+    private GUIStyle guiStyle = new GUIStyle();
+    
     [MenuItem("Tools/Cross Product")]
     public static void ShowWindow()
     {
@@ -34,6 +36,10 @@ public class CrossProductEditor : CommonEditor, IUpdateSceneGUI
         propQ = obj.FindProperty("m_q");
         propPxQ = obj.FindProperty("m_pxq");
         
+        guiStyle.fontSize = 20;
+        guiStyle.fontStyle = FontStyle.Bold;
+        guiStyle.normal.textColor = Color.white;
+        
         SceneView.duringSceneGui += SceneGUI;
     }
 
@@ -44,7 +50,20 @@ public class CrossProductEditor : CommonEditor, IUpdateSceneGUI
 
     private void OnGUI()
     {
-        
+        obj.Update();
+        DrawBlockGUI(("P"), propP);
+        DrawBlockGUI(("Q"), propQ);
+        DrawBlockGUI(("P x Q"), propPxQ);
+
+        if (obj.ApplyModifiedProperties())
+        {
+            SceneView.RepaintAll();
+        }
+
+        if (GUILayout.Button("Reset Values"))
+        {
+            SetDefaultValues();
+        }
     }
 
     public void SceneGUI(SceneView view)
