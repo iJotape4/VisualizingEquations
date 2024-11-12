@@ -70,6 +70,23 @@ public class CrossProductEditor : CommonEditor, IUpdateSceneGUI
     {
         Vector3 p = Handles.PositionHandle(m_p, Quaternion.identity);
         Vector3 q = Handles.PositionHandle(m_q, Quaternion.identity);
+
+        Handles.color = Color.blue;
+        Vector3 pxq = CrossProduct(p, q);
+        Handles.DrawSolidDisc(pxq, Vector3.forward, 0.05f);
+        
+        if(m_p != p || m_q != q)
+        {
+            Undo.RecordObject(this, "Tool Move");
+            m_p = p;
+            m_q = q;
+            m_pxq = pxq;
+            RepaintOnGUI();
+        }
+        
+        DrawLineGUI(p, "P", Color.green);
+        DrawLineGUI(q, "Q", Color.red);
+        DrawLineGUI(pxq, "P x Q", Color.blue);
     }
     
     private void DrawLineGUI ( Vector3 pos, string text, Color color)
